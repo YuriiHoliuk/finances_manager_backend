@@ -1,8 +1,8 @@
 const { Model } = require('./Model');
 
 class UserModel extends Model {
-    constructor(dbClient) {
-        super(dbClient, 'users');
+    constructor() {
+        super('users');
     }
 
     async getList() {
@@ -11,7 +11,12 @@ class UserModel extends Model {
     }
 
     async getById(id) {
-        const { rows: [user] } = await this.selectAllColumns({ id });
+        const { rows: [user] } = await this.select(['name', 'email'],{ id });
+        return user;
+    }
+
+    async getByEmail(email) {
+        const { rows: [user] } = await this.selectAllColumns({ email });
         return user;
     }
 
@@ -21,6 +26,8 @@ class UserModel extends Model {
     }
 }
 
+const userModel = new UserModel();
+
 module.exports = {
-  UserModel,
+    userModel,
 };

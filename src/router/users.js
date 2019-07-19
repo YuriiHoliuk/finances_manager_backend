@@ -1,24 +1,17 @@
 const { Router } = require('express');
-const { UserModel } = require('../models/UserModel');
+const { userModel } = require('../models');
 
-function createUsersRoutes(dbClient) {
+function createUsersRoutes() {
     const router = Router();
-    const usersModel = new UserModel(dbClient);
 
     router.get('/', async (req, res) => {
-        const result = await usersModel.getList();
+        const result = await userModel.getList();
         console.log({ result });
         res.json(result);
     });
 
     router.get('/:userId', async (req, res) => {
-        const result = await usersModel.getById(req.params.userId);
-        console.log({ result });
-        res.json(result);
-    });
-
-    router.post('/', async (req, res) => {
-        const result = await usersModel.create(req.body);
+        const result = await userModel.getById(req.params.userId);
         console.log({ result });
         res.json(result);
     });

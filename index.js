@@ -1,5 +1,7 @@
 const createApp = require('./src/app');
 
+require('dotenv').config();
+
 (async () => {
     const app = await createApp();
 

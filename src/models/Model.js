@@ -1,5 +1,7 @@
+const { client: dbClient } = require('../db');
+
 class Model {
-    constructor(dbClient, tableName) {
+    constructor(tableName) {
         this.dbClient = dbClient;
         this.tableName = tableName;
     }
@@ -15,20 +17,20 @@ class Model {
         let filtersString;
         let filtersValues;
 
-        if (filters && filters.length) {
+        if (filters) {
             filtersString = Object.keys(filters) // ['id', 'email']
                 .map((name, index) => `${name} = $${index + 1}`) // ['id = $1', 'email = $2']
                 .join(' AND '); // 'id = $1 AND email = $2'
             filtersValues = Object.values(filters); // [8, 'bob@mail.com']
         }
 
-        const whereString = filters && filters.length
+        const whereString = filters
             ? ` WHERE ${filtersString}`
             : '';
 
         return await this.query(
             `SELECT ${columns.join(', ')} FROM ${tableName}${whereString};`,
-            filters && filters.length ? filtersValues : [],
+            filters ? filtersValues : [],
         )
     }
 

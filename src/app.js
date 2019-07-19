@@ -1,10 +1,10 @@
 const express = require('express');
-const { creteDbClient } = require('./db');
+const { initDb } = require('./db');
 const { createRoutes } = require('./router');
 
 async function createApp() {
-    const dbClient = await creteDbClient();
-    const router = createRoutes(dbClient);
+    await initDb();
+    const router = createRoutes();
     const app = express();
 
     app.use(express.json());
